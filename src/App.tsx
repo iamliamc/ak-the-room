@@ -5,7 +5,7 @@ import MultiVideoBlock from './components/MultiVideoBlock'
 import AppBar from './components/AppBar'
 import { Container } from '@mui/material';
 import Footer from './components/Footer'
-import Test from './components/Test'
+import Test from './components/MultiVideoBlock'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
@@ -22,12 +22,7 @@ function App() {
       <CssBaseline/>
       <AppBar></AppBar>
       <div className="App">
-        {/* <header className="App-header">
-        <Container>
-          <MultiVideoBlock></MultiVideoBlock>
-        </Container>
-        </header> */}
-        <Test></Test>
+        <MultiVideoBlock></MultiVideoBlock>
       </div>
       <Footer></Footer>
     </ThemeProvider>
