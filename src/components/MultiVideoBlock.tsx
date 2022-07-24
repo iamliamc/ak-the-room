@@ -5,7 +5,7 @@ import { Dialog, DialogTitle, DialogContent, DialogContentText } from '@mui/mate
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
 
-
+// https://stackoverflow.com/questions/37463832/how-to-play-pause-video-in-react-without-external-library
 import Box, { BoxProps } from '@mui/material/Box';
 
 function OpeningDialogue () {
@@ -37,7 +37,7 @@ function OpeningDialogue () {
         </DialogContent>
         <DialogActions>
           {/* <Button onClick={handleClose}>Disagree</Button> */}
-          <Button onClick={handleClose} autoFocus>
+          <Button onClick={handleClose}>
             Start
           </Button>
         </DialogActions>
@@ -74,12 +74,12 @@ export default function Test() {
         <OpeningDialogue/>
         <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
             <Item style={{display: "flex", flexDirection: "row"}}>
-                <video controls muted width="100%" height="100%">
+                <video muted width="100%" height="100%">
                     <source src="./videos/satellite.mp4" type="video/mp4"/>
                 </video>
             </Item>
             <Item style={{display: "flex", flexDirection: "row"}}>
-                <video controls muted width="100%" height="100%">
+                <video muted width="100%" height="100%">
                     <source src="./videos/ams_overdue.mp4" type="video/mp4"/>
                 </video>
             </Item>
