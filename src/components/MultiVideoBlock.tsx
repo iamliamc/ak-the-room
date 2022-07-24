@@ -1,8 +1,5 @@
 import React, { useState, useRef } from 'react';
 import type { FC } from 'react';
-
-import Grid from '@mui/material/Grid';
-import Container from '@mui/material/Container';
 import { Dialog, DialogTitle, DialogContent, DialogContentText } from '@mui/material';
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
@@ -55,12 +52,10 @@ function Item(props: BoxProps) {
       sx={{
         bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#101010' : '#fff'),
         color: (theme) => (theme.palette.mode === 'dark' ? 'grey.300' : 'grey.800'),
-        // border: '0.1px solid',
         borderColor: (theme) =>
           theme.palette.mode === 'dark' ? 'grey.800' : 'grey.300',
         p: 1,
         m: 1,
-        // borderRadius: 2,
         fontSize: '0.875rem',
         fontWeight: '700',
         ...sx,
@@ -85,13 +80,12 @@ export default function MultiVideoBlock() {
   }
 
   const switchAudio = (): void => {
-    console.log("Switch!", audioSwitchState)
     if (audioSwitchState) {
       vidRef1.current.muted = true;
       vidRef2.current.muted = false;
     } else {
-      vidRef2.current.muted = true;
       vidRef1.current.muted = false;
+      vidRef2.current.muted = true;
     }
     setAudioSwitchState(!audioSwitchState)
   }
@@ -99,7 +93,7 @@ export default function MultiVideoBlock() {
   return (
     <div style={{width: '100%'}}>
         <OpeningDialogue startVideos={startVideos}/>
-        <Box onClick={switchAudio} sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
+        <Box style={{cursor: "pointer"}} onClick={switchAudio} sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
             <Item style={{display: "flex", flexDirection: "row"}}>
                 <video ref={vidRef1} muted width="100%" height="100%">
                     <source src="./videos/satellite.mp4" type="video/mp4"/>
