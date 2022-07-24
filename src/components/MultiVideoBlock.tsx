@@ -1,4 +1,6 @@
 import React, { useState, useRef } from 'react';
+import type { FC } from 'react';
+
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import { Dialog, DialogTitle, DialogContent, DialogContentText } from '@mui/material';
@@ -8,14 +10,15 @@ import DialogActions from '@mui/material/DialogActions';
 // https://stackoverflow.com/questions/37463832/how-to-play-pause-video-in-react-without-external-library
 import Box, { BoxProps } from '@mui/material/Box';
 
-function OpeningDialogue () {
+interface OpeningDialogueProps {
+  startVideos: Function, 
+}
+
+const OpeningDialogue: FC<OpeningDialogueProps> = ({startVideos}) => {
   const [open, setOpen] = useState(true);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
+  const handleStart = () => {
+    startVideos()
     setOpen(false);
   };
 
@@ -23,7 +26,7 @@ function OpeningDialogue () {
     <div>
       <Dialog
         open={open}
-        onClose={handleClose}
+        onClose={handleStart}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -36,8 +39,7 @@ function OpeningDialogue () {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          {/* <Button onClick={handleClose}>Disagree</Button> */}
-          <Button onClick={handleClose}>
+          <Button onClick={handleStart}>
             Start
           </Button>
         </DialogActions>
@@ -68,18 +70,43 @@ function Item(props: BoxProps) {
   );
 }
 
-export default function Test() {
+export default function MultiVideoBlock() {
+  const [audioSwitchState, setAudioSwitchState]  = useState<boolean>(true);
+
+
+  const vidRef1 = useRef<any>(null);
+  const vidRef2 = useRef<any>(null);
+
+  const startVideos = (): void => {
+    if (vidRef1.current != null && vidRef2.current != null) {
+      vidRef1.current.play();
+      vidRef2.current.play();
+    }
+  }
+
+  const switchAudio = (): void => {
+    console.log("Switch!", audioSwitchState)
+    if (audioSwitchState) {
+      vidRef1.current.muted = true;
+      vidRef2.current.muted = false;
+    } else {
+      vidRef2.current.muted = true;
+      vidRef1.current.muted = false;
+    }
+    setAudioSwitchState(!audioSwitchState)
+  }
+
   return (
     <div style={{width: '100%'}}>
-        <OpeningDialogue/>
-        <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
+        <OpeningDialogue startVideos={startVideos}/>
+        <Box onClick={switchAudio} sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
             <Item style={{display: "flex", flexDirection: "row"}}>
-                <video muted width="100%" height="100%">
+                <video ref={vidRef1} muted width="100%" height="100%">
                     <source src="./videos/satellite.mp4" type="video/mp4"/>
                 </video>
             </Item>
             <Item style={{display: "flex", flexDirection: "row"}}>
-                <video muted width="100%" height="100%">
+                <video ref={vidRef2} width="100%" height="100%">
                     <source src="./videos/ams_overdue.mp4" type="video/mp4"/>
                 </video>
             </Item>

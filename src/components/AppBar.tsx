@@ -8,7 +8,6 @@ export default function ButtonAppBar() {
     <AppBar position="relative">
     <Toolbar>
       <Typography variant="h6" color="inherit" noWrap>
-        The Room
       </Typography>
     </Toolbar>
   </AppBar>
