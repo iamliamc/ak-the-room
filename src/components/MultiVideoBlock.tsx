@@ -8,7 +8,7 @@ import PlayCircleOutline from '@mui/icons-material/PlayCircleOutline';
 import Box, { BoxProps } from '@mui/material/Box';
 
 // Possible solution                 https://www.npmjs.com/package/react-player
-
+// Please consider migrating to https://nextjs.org or https://remix.run to develop React apps which are deployable using Heroku's Node.js buildpack https://github.com/heroku/heroku-buildpack-nodejs, or you may develop your own create-react-app deployment with Node.js and Nginx buildpacks.
 
 interface OpeningDialogueProps {
   startVideos: Function, 
