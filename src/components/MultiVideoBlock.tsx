@@ -117,11 +117,10 @@ export default function MultiVideoBlock() {
                 </video>
             </Item>
             <Item style={{display: "flex", flexDirection: "row"}}>
-                {/* <video ref={vidRef2} width="100%" height="100%">
+                <video ref={vidRef2} width="100%" height="100%">
                     <source src="./videos/RIGHT Dance 15-10-2021 clean sound.mp4" type="video/mp4"/>
-                    <source src="https://www.youtube.com/embed/9YffrCViTVk" type="video/mp4" />
-                </video> */}
-                <iframe ref={vidRef2} width="100%" height="100%" src="https://www.youtube.com/embed/9YffrCViTVk" title="YouTube video player"></iframe>
+                </video>
+                {/* <iframe ref={vidRef2} width="100%" height="100%" src="https://www.youtube.com/embed/9YffrCViTVk" title="YouTube video player"></iframe> */}
             </Item>
         </Box>
     </div>
