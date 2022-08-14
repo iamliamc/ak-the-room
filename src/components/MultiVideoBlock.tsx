@@ -6,9 +6,13 @@ import DialogActions from '@mui/material/DialogActions';
 import PauseCircleOutline from '@mui/icons-material/PauseCircleOutline';
 import PlayCircleOutline from '@mui/icons-material/PlayCircleOutline';
 import Box, { BoxProps } from '@mui/material/Box';
+import ReactPlayer from 'react-player'
 
 // Possible solution                 https://www.npmjs.com/package/react-player
 // Please consider migrating to https://nextjs.org or https://remix.run to develop React apps which are deployable using Heroku's Node.js buildpack https://github.com/heroku/heroku-buildpack-nodejs, or you may develop your own create-react-app deployment with Node.js and Nginx buildpacks.
+// Possible solution https://www.npmjs.com/package/react-player
+// https://github.com/CookPete/react-player/blob/HEAD/src/demo/App.js
+
 
 interface OpeningDialogueProps {
   startVideos: Function, 
@@ -83,19 +87,24 @@ function Item(props: BoxProps) {
 export default function MultiVideoBlock() {
   const [audioSwitchState, setAudioSwitchState] = useState<boolean>(true);
   const [playPauseState, setPlayPauseState] = useState<boolean>(true);
+  const [videoOnePlaying, setVideoOnePlaying] = useState(false)
+  const [videoTwoPlaying, setVideoTwoPlaying] = useState(false)
 
 
   const vidRef1 = useRef<any>(null);
   const vidRef2 = useRef<any>(null);
 
   const startVideos = (): void => {
-    if (vidRef1.current != null && vidRef2.current != null) {
-      vidRef1.current.play();
-      vidRef2.current.play();
-    }
+    setVideoOnePlaying(true)
+    setVideoTwoPlaying(true)
+    // if (vidRef1.current != null && vidRef2.current != null) {
+    //   vidRef1.current.play();
+    //   vidRef2.current.play();
+    // }
   }
 
   const switchAudio = (): void => {
+    console.log('hi')
     if (audioSwitchState) {
       vidRef1.current.muted = false;
       vidRef2.current.muted = true;
@@ -110,15 +119,11 @@ export default function MultiVideoBlock() {
     <div style={{width: '100%'}}>
         <OpeningDialogue startVideos={startVideos}/>
         <Box style={{cursor: "pointer"}} onClick={switchAudio} sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
-            <Item style={{display: "flex", flexDirection: "row"}}>
-                <video ref={vidRef1} muted width="100%" height="100%">
-                    <source src="./videos/LEFT Interrogation 15-10-2021 with clean sound.mp4" type="video/mp4"/>
-                </video>
+            <Item width="100%" height="100%" >
+                <ReactPlayer playing={videoOnePlaying} url='https://vimeo.com/512330229?controls=0' />
             </Item>
-            <Item style={{display: "flex", flexDirection: "row"}}>
-                <video ref={vidRef2} width="100%" height="100%">
-                    <source src="./videos/RIGHT Dance 15-10-2021 clean sound.mp4" type="video/mp4"/>
-                </video>
+            <Item width="100%" height="100%" >
+              <ReactPlayer playing={videoTwoPlaying} url='https://player.vimeo.com/video/76979871?controls=0' />
             </Item>
         </Box>
         <PausePlay toggleVideoPlayState={() => {console.log('hi')}}/>
