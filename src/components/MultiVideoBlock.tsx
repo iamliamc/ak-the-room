@@ -3,8 +3,8 @@ import type { FC } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogContentText } from '@mui/material';
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
-import PauseCircleOutlineIcon from '@mui/icons-material/PauseCircleOutline';
-import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
+import PauseCircleOutline from '@mui/icons-material/PauseCircleOutline';
+import PlayCircleOutline from '@mui/icons-material/PlayCircleOutline';
 import Box, { BoxProps } from '@mui/material/Box';
 
 // Possible solution                 https://www.npmjs.com/package/react-player
@@ -22,7 +22,7 @@ const PausePlay: FC<PausePlayProps> = ({toggleVideoPlayState}) => {
   const [playPauseState, setPlayPauseState] = useState<boolean>(true);
 
   return (
-    playPauseState ? <div onClick={toggleVideoPlayState}><PlayCircleOutlineIcon fontSize="large" color="disabled"/></div> : <div onClick={toggleVideoPlayState}><PauseCircleOutlineIcon fontSize="large" color="disabled"/></div>
+    playPauseState ? <div onClick={toggleVideoPlayState}><PlayCircleOutline fontSize="large" color="disabled"/></div> : <div onClick={toggleVideoPlayState}><PauseCircleOutline fontSize="large" color="disabled"/></div>
   )
 }
 
@@ -119,10 +119,9 @@ export default function MultiVideoBlock() {
                 <video ref={vidRef2} width="100%" height="100%">
                     <source src="./videos/RIGHT Dance 15-10-2021 clean sound.mp4" type="video/mp4"/>
                 </video>
-                {/* <iframe ref={vidRef2} width="100%" height="100%" src="https://www.youtube.com/embed/9YffrCViTVk" title="YouTube video player"></iframe> */}
             </Item>
         </Box>
-        {/* <PausePlay/> */}
+        <PausePlay toggleVideoPlayState={() => {console.log('hi')}}/>
     </div>
   );
 }
