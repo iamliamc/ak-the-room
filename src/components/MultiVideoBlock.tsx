@@ -19,14 +19,19 @@ interface OpeningDialogueProps {
 }
 
 interface PausePlayProps {
-  toggleVideoPlayState: React.MouseEventHandler<HTMLInputElement>
+  toggleVideoPlayState: any //React.MouseEventHandler<HTMLInputElement>
 }
 
 const PausePlay: FC<PausePlayProps> = ({toggleVideoPlayState}) => {
   const [playPauseState, setPlayPauseState] = useState<boolean>(true);
 
+  const internalToggleVideoPlayState = (): void => {
+    setPlayPauseState(!playPauseState)
+    toggleVideoPlayState()
+  } 
+
   return (
-    playPauseState ? <div onClick={toggleVideoPlayState}><PlayCircleOutline fontSize="large" color="disabled"/></div> : <div onClick={toggleVideoPlayState}><PauseCircleOutline fontSize="large" color="disabled"/></div>
+    playPauseState ? <div onClick={internalToggleVideoPlayState}><PlayCircleOutline fontSize="large" color="disabled"/></div> : <div onClick={internalToggleVideoPlayState}><PauseCircleOutline fontSize="large" color="disabled"/></div>
   )
 }
 
@@ -115,18 +120,24 @@ export default function MultiVideoBlock() {
     setAudioSwitchState(!audioSwitchState)
   }
 
+  const toggleVideoPlayState = (): void => {
+    setPlayPauseState(!playPauseState)
+  }
+
   return (
-    <div style={{width: '100%'}}>
+    <div style={{width: '100%', height: '100%'}}>
         <OpeningDialogue startVideos={startVideos}/>
-        <Box style={{cursor: "pointer"}} onClick={switchAudio} sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
-            <Item width="100%" height="100%" >
-                <ReactPlayer playing={videoOnePlaying} url='https://vimeo.com/512330229?controls=0' />
-            </Item>
-            <Item width="100%" height="100%" >
-              <ReactPlayer playing={videoTwoPlaying} url='https://player.vimeo.com/video/76979871?controls=0' />
-            </Item>
-        </Box>
-        <PausePlay toggleVideoPlayState={() => {console.log('hi')}}/>
+        <div style={{cursor: "pointer"}} onClick={switchAudio}>
+          <Box  sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
+              <Item style={{display: "flex", flexDirection: "row"}}>
+                  <ReactPlayer width="100%" height="100%" playing={playPauseState} url='https://vimeo.com/512330229?controls=0' />
+              </Item>
+              <Item  style={{display: "flex", flexDirection: "row"}}>
+                <ReactPlayer width="100%" height="720px" playing={playPauseState} url='https://vimeo.com/376578408?controls=0' />
+              </Item>
+          </Box>
+        </div>
+        <PausePlay toggleVideoPlayState={toggleVideoPlayState}/>
     </div>
   );
 }
