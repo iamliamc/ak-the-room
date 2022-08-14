@@ -15,15 +15,14 @@ interface OpeningDialogueProps {
 }
 
 interface PausePlayProps {
-  toggleVideoPlayState: Function
+  toggleVideoPlayState: React.MouseEventHandler<HTMLInputElement>
 }
 
 const PausePlay: FC<PausePlayProps> = ({toggleVideoPlayState}) => {
   const [playPauseState, setPlayPauseState] = useState<boolean>(true);
 
   return (
-    // playPauseState ? <PlayCircleOutlineIcon onClick={toggleVideoPlayState} fontSize="large" color="disabled"/> : <PauseCircleOutlineIcon onClick={toggleVideoPlayState} fontSize="large" color="disabled"/>
-    <div></div>
+    playPauseState ? <div onClick={toggleVideoPlayState}><PlayCircleOutlineIcon fontSize="large" color="disabled"/></div> : <div onClick={toggleVideoPlayState}><PauseCircleOutlineIcon fontSize="large" color="disabled"/></div>
   )
 }
 
@@ -123,6 +122,7 @@ export default function MultiVideoBlock() {
                 {/* <iframe ref={vidRef2} width="100%" height="100%" src="https://www.youtube.com/embed/9YffrCViTVk" title="YouTube video player"></iframe> */}
             </Item>
         </Box>
+        {/* <PausePlay/> */}
     </div>
   );
 }
