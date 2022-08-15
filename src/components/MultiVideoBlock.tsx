@@ -1,11 +1,15 @@
 import React, { useState, useRef } from 'react';
 import type { FC } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogContentText } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, StyledEngineProvider } from '@mui/material';
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
 import PauseCircleOutline from '@mui/icons-material/PauseCircleOutline';
 import PlayCircleOutline from '@mui/icons-material/PlayCircleOutline';
+import GraphicEqIcon from '@mui/icons-material/GraphicEq';
 import Box, { BoxProps } from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
+
+
 import ReactPlayer from 'react-player'
 
 // Possible solution                 https://www.npmjs.com/package/react-player
@@ -16,6 +20,7 @@ import ReactPlayer from 'react-player'
 
 interface OpeningDialogueProps {
   startVideos: Function, 
+  readyCount: Number
 }
 
 interface PausePlayProps {
@@ -35,13 +40,33 @@ const PausePlay: FC<PausePlayProps> = ({toggleVideoPlayState}) => {
   )
 }
 
-const OpeningDialogue: FC<OpeningDialogueProps> = ({startVideos}) => {
+const sleep = (ms: number) => {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+const OpeningDialogue: FC<OpeningDialogueProps> = ({startVideos, readyCount}) => {
   const [open, setOpen] = useState(true);
 
   const handleStart = () => {
+    
     startVideos()
+    sleep(500)
     setOpen(false);
   };
+
+  const dialogActionHelper = () => {
+    if (readyCount === 2) {
+      return (
+        <Button onClick={handleStart}>
+          Start
+        </Button>
+      )
+    } else {
+      return (
+        <CircularProgress></CircularProgress>
+      )
+    }
+  }
 
   return (
     <div>
@@ -52,18 +77,16 @@ const OpeningDialogue: FC<OpeningDialogueProps> = ({startVideos}) => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"The Room"}
+          {`The Room`}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Press start to begin the experience. Click either video to switch the audio channel.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleStart}>
-            Start
-          </Button>
-        </DialogActions>
+            <DialogContentText id="alert-dialog-description">
+              Press start to begin the experience. Click either video to switch the audio channel.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            {dialogActionHelper()}
+          </DialogActions> 
       </Dialog>
     </div>
   );
@@ -91,32 +114,14 @@ function Item(props: BoxProps) {
 
 export default function MultiVideoBlock() {
   const [audioSwitchState, setAudioSwitchState] = useState<boolean>(true);
-  const [playPauseState, setPlayPauseState] = useState<boolean>(true);
-  const [videoOnePlaying, setVideoOnePlaying] = useState(false)
-  const [videoTwoPlaying, setVideoTwoPlaying] = useState(false)
-
-
-  const vidRef1 = useRef<any>(null);
-  const vidRef2 = useRef<any>(null);
+  const [playPauseState, setPlayPauseState] = useState<boolean>(false);
+  const [readyCount, setReadyCount] = useState(0);
 
   const startVideos = (): void => {
-    setVideoOnePlaying(true)
-    setVideoTwoPlaying(true)
-    // if (vidRef1.current != null && vidRef2.current != null) {
-    //   vidRef1.current.play();
-    //   vidRef2.current.play();
-    // }
+    setPlayPauseState(true)
   }
 
   const switchAudio = (): void => {
-    console.log('hi')
-    if (audioSwitchState) {
-      vidRef1.current.muted = false;
-      vidRef2.current.muted = true;
-    } else {
-      vidRef1.current.muted = true;
-      vidRef2.current.muted = false;
-    }
     setAudioSwitchState(!audioSwitchState)
   }
 
@@ -124,19 +129,24 @@ export default function MultiVideoBlock() {
     setPlayPauseState(!playPauseState)
   }
 
+  const onReady = () => {
+    setReadyCount(readyCount + 1);
+  };
+
   return (
     <div style={{width: '100%', height: '100%'}}>
-        <OpeningDialogue startVideos={startVideos}/>
+        <OpeningDialogue startVideos={startVideos} readyCount={readyCount}/>
         <div style={{cursor: "pointer"}} onClick={switchAudio}>
           <Box  sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
               <Item style={{display: "flex", flexDirection: "row"}}>
-                  <ReactPlayer width="100%" height="100%" playing={playPauseState} url='https://vimeo.com/512330229?controls=0' />
+                  <ReactPlayer width="100%" height="100%" onReady={onReady} muted={audioSwitchState} playing={playPauseState} url='https://vimeo.com/512330229?controls=0' />
               </Item>
               <Item  style={{display: "flex", flexDirection: "row"}}>
-                <ReactPlayer width="100%" height="720px" playing={playPauseState} url='https://vimeo.com/376578408?controls=0' />
+                <ReactPlayer width="100%" height="720px" onReady={onReady} muted={audioSwitchState} playing={playPauseState} url='https://vimeo.com/376578408?controls=0' />
               </Item>
           </Box>
         </div>
+        <GraphicEqIcon fontSize="large" color="disabled" style={{transform: audioSwitchState ? 'rotate(90deg)' : 'rotate(0deg)'}} onClick={switchAudio}></GraphicEqIcon>
         <PausePlay toggleVideoPlayState={toggleVideoPlayState}/>
     </div>
   );
