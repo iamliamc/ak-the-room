@@ -136,17 +136,17 @@ export default function MultiVideoBlock() {
   return (
     <div style={{width: '100%', height: '100%'}}>
         <OpeningDialogue startVideos={startVideos} readyCount={readyCount}/>
-        <div style={{cursor: "pointer"}} onClick={switchAudio}>
+        <div style={{cursor: "pointer", pointerEvents: "none"}} onClick={switchAudio}>
           <Box  sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
               <Item style={{display: "flex", flexDirection: "row"}}>
-                  <ReactPlayer width="100%" height="100%" onReady={onReady} muted={audioSwitchState} playing={playPauseState} url='https://vimeo.com/512330229?controls=0' />
+                  <ReactPlayer width="100%" height="100%" onReady={onReady} controls={false} muted={audioSwitchState} playing={playPauseState} url='https://www.youtube.com/watch?v=mKXkdvhS-HA' />
               </Item>
               <Item  style={{display: "flex", flexDirection: "row"}}>
-                <ReactPlayer width="100%" height="720px" onReady={onReady} muted={audioSwitchState} playing={playPauseState} url='https://vimeo.com/376578408?controls=0' />
+                <ReactPlayer width="100%" height="720px" onReady={onReady} controls={false} muted={!audioSwitchState} playing={playPauseState} url='https://www.youtube.com/watch?v=dyHWP-F2fyU&t' />
               </Item>
           </Box>
         </div>
-        <GraphicEqIcon fontSize="large" color="disabled" style={{transform: audioSwitchState ? 'rotate(90deg)' : 'rotate(0deg)'}} onClick={switchAudio}></GraphicEqIcon>
+        <GraphicEqIcon fontSize="large" color="disabled" style={{transform: !audioSwitchState ? 'rotate(90deg)' : 'rotate(0deg)'}} onClick={switchAudio}></GraphicEqIcon>
         <PausePlay toggleVideoPlayState={toggleVideoPlayState}/>
     </div>
   );
