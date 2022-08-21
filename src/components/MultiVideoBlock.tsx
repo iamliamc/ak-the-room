@@ -81,7 +81,10 @@ const OpeningDialogue: FC<OpeningDialogueProps> = ({startVideos, readyCount}) =>
         </DialogTitle>
         <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              Press start to begin the experience. Click either video to switch the audio channel.
+              <div>
+                <strong>Click the <GraphicEqIcon style={{transform: 'rotate(90deg)', position: 'relative', top: '3px'}} fontSize="small" color="disabled"/> icon to switch the audio channel. </strong>             
+              </div>
+              Press start to begin the experience.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -113,15 +116,25 @@ function Item(props: BoxProps) {
 }
 
 export default function MultiVideoBlock() {
-  const [audioSwitchState, setAudioSwitchState] = useState<boolean>(true);
+  const [audioSwitchState, setAudioSwitchState] = useState<boolean>(false);
   const [playPauseState, setPlayPauseState] = useState<boolean>(false);
   const [readyCount, setReadyCount] = useState(0);
+  const [audioOneState, setAudioOneState] = useState(0.75);
+  const [audioTwoState, setAudioTwoState] = useState(0);
+
 
   const startVideos = (): void => {
     setPlayPauseState(true)
   }
 
   const switchAudio = (): void => {
+    if (audioSwitchState) {
+      setAudioOneState(0.75)
+      setAudioTwoState(0)
+    } else {
+      setAudioOneState(0)
+      setAudioTwoState(0.75)
+    }
     setAudioSwitchState(!audioSwitchState)
   }
 
@@ -136,13 +149,13 @@ export default function MultiVideoBlock() {
   return (
     <div style={{width: '100%', height: '100%'}}>
         <OpeningDialogue startVideos={startVideos} readyCount={readyCount}/>
-        <div style={{cursor: "pointer", pointerEvents: "none"}} onClick={switchAudio}>
+        <div style={{cursor: "pointer", pointerEvents: "none"}}>
           <Box  sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
               <Item style={{display: "flex", flexDirection: "row"}}>
-                  <ReactPlayer width="100%" height="100%" onReady={onReady} controls={false} muted={audioSwitchState} playing={playPauseState} url='https://www.youtube.com/watch?v=mKXkdvhS-HA' />
+                <ReactPlayer width="100%" height="100%" onReady={onReady} controls={false} volume={audioOneState} playing={playPauseState} url='https://player.vimeo.com/video/512330229?h=65d230fcee&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479' />
               </Item>
               <Item  style={{display: "flex", flexDirection: "row"}}>
-                <ReactPlayer width="100%" height="720px" onReady={onReady} controls={false} muted={!audioSwitchState} playing={playPauseState} url='https://www.youtube.com/watch?v=dyHWP-F2fyU&t' />
+                <ReactPlayer width="100%" height="720px" onReady={onReady} controls={false} volume={audioTwoState} playing={playPauseState} url='https://player.vimeo.com/video/376578408?h=f32f00d47f&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479' />
               </Item>
           </Box>
         </div>
