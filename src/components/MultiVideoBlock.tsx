@@ -17,6 +17,19 @@ import ReactPlayer from 'react-player'
 // Possible solution https://www.npmjs.com/package/react-player
 // https://github.com/CookPete/react-player/blob/HEAD/src/demo/App.js
 
+// #graph-icon {
+//   border-radius: 29px;
+//   animation: animate 3s linear infinite;
+//   text-shadow: 0 0 50px #0072ff, 0 0 100px #0072ff, 0 0 150px #0072ff,
+//     0 0 200px #0072ff;
+// }
+
+// @keyframes animate {
+//   0% { filter: hue-rotate(0deg)}
+//   50% {filter: hue-rotate(20deg)}
+//   100% {filter: hue-rotate(0deg)}
+// }
+
 
 interface OpeningDialogueProps {
   startVideos: Function, 
@@ -152,10 +165,10 @@ export default function MultiVideoBlock() {
         <div style={{cursor: "pointer", pointerEvents: "none"}}>
           <Box  sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
               <Item style={{display: "flex", flexDirection: "row"}}>
-                <ReactPlayer width="100%" height="100%" onReady={onReady} controls={false} volume={audioOneState} playing={playPauseState} url='https://player.vimeo.com/video/512330229?h=65d230fcee&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479' />
+                <ReactPlayer width="100%" height="100%" onReady={onReady} controls={false} volume={audioOneState} playing={playPauseState} url='https://player.vimeo.com/video/741916978?h=51bdfd9b56&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479' />
               </Item>
               <Item  style={{display: "flex", flexDirection: "row"}}>
-                <ReactPlayer width="100%" height="720px" onReady={onReady} controls={false} volume={audioTwoState} playing={playPauseState} url='https://player.vimeo.com/video/376578408?h=f32f00d47f&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479' />
+                <ReactPlayer width="100%" height="720px" onReady={onReady} controls={false} volume={audioTwoState} playing={playPauseState} url='https://player.vimeo.com/video/741917463?h=9f442bbbbc&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479' />
               </Item>
           </Box>
         </div>
