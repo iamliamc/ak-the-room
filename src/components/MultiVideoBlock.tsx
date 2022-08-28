@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import type { FC } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogContentText, StyledEngineProvider } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogContentText } from '@mui/material';
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
 import PauseCircleOutline from '@mui/icons-material/PauseCircleOutline';
@@ -49,7 +49,7 @@ const PausePlay: FC<PausePlayProps> = ({toggleVideoPlayState}) => {
   } 
 
   return (
-    playPauseState ? <div onClick={internalToggleVideoPlayState}><PlayCircleOutline fontSize="large" color="disabled"/></div> : <div onClick={internalToggleVideoPlayState}><PauseCircleOutline fontSize="large" color="disabled"/></div>
+    playPauseState ? <div onClick={internalToggleVideoPlayState}><PauseCircleOutline fontSize="large" color="disabled"/></div> : <div onClick={internalToggleVideoPlayState}><PlayCircleOutline fontSize="large" color="disabled"/></div>
   )
 }
 
