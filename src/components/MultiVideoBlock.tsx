@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { FC } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogContentText } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -7,6 +7,7 @@ import PauseCircleOutline from '@mui/icons-material/PauseCircleOutline';
 import PlayCircleOutline from '@mui/icons-material/PlayCircleOutline';
 import GraphicEqIcon from '@mui/icons-material/GraphicEq';
 import Box, { BoxProps } from '@mui/material/Box';
+import SpaceBarIcon from '@mui/icons-material/SpaceBar';
 import CircularProgress from '@mui/material/CircularProgress';
 
 
@@ -95,8 +96,9 @@ const OpeningDialogue: FC<OpeningDialogueProps> = ({startVideos, readyCount}) =>
         <DialogContent>
             <DialogContentText id="alert-dialog-description">
               <div>
-                <strong>Click the <GraphicEqIcon style={{transform: 'rotate(90deg)', position: 'relative', top: '3px'}} fontSize="small" color="disabled"/> icon to switch the audio channel. </strong>             
+                <strong>Press spacebar <SpaceBarIcon style={{ position: 'relative', top: '8px'}} color="disabled" /> or click the <GraphicEqIcon style={{transform: 'rotate(90deg)', position: 'relative', top: '3px'}} fontSize="small" color="disabled"/> icon to switch the active audio channel. </strong>             
               </div>
+              <br/>
               Press start to begin the experience.
             </DialogContentText>
           </DialogContent>
@@ -129,11 +131,28 @@ function Item(props: BoxProps) {
 }
 
 export default function MultiVideoBlock() {
-  const [audioSwitchState, setAudioSwitchState] = useState<boolean>(false);
+  // const [audioSwitchState, setAudioSwitchState] = useState<boolean>(false);
   const [playPauseState, setPlayPauseState] = useState<boolean>(false);
   const [readyCount, setReadyCount] = useState(0);
-  const [audioOneState, setAudioOneState] = useState(0.75);
+  const [audioOneState, setAudioOneState] = useState(0.85);
   const [audioTwoState, setAudioTwoState] = useState(0);
+
+  const checkKeyInput = (e: any): void => {
+    console.log("liam", e.keyCode)
+    if(e.keyCode === 32) {
+      switchAudio()
+    }
+  }
+
+  useEffect(() => {
+    // Code to execute when component is mounted
+    document.addEventListener("keydown", checkKeyInput, false);
+    
+    return () => {
+      // Code to execute when component is unmounted
+      document.removeEventListener("keydown", checkKeyInput, false);
+    };
+  }, []);
 
 
   const startVideos = (): void => {
@@ -141,12 +160,13 @@ export default function MultiVideoBlock() {
   }
 
   const switchAudio = (): void => {
+    console.log('switch audio', audioSwitchState)
     if (audioSwitchState) {
-      setAudioOneState(0.75)
+      setAudioOneState(0.85)
       setAudioTwoState(0)
     } else {
       setAudioOneState(0)
-      setAudioTwoState(0.75)
+      setAudioTwoState(0.85)
     }
     setAudioSwitchState(!audioSwitchState)
   }
@@ -155,25 +175,27 @@ export default function MultiVideoBlock() {
     setPlayPauseState(!playPauseState)
   }
 
+
+
   const onReady = () => {
     setReadyCount(readyCount + 1);
   };
 
   return (
     <div style={{width: '100%', height: '100%'}}>
-        <OpeningDialogue startVideos={startVideos} readyCount={readyCount}/>
+      <OpeningDialogue startVideos={startVideos} readyCount={readyCount}/>
+      <Box  sx={{ display: 'grid', gridTemplateColumns: 'repeat(1, 1fr)' }}>
         <div style={{cursor: "pointer", pointerEvents: "none"}}>
-          <Box  sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)' }}>
-              <Item style={{display: "flex", flexDirection: "row"}}>
-                <ReactPlayer width="100%" height="100%" onReady={onReady} controls={false} volume={audioOneState} playing={playPauseState} url='https://player.vimeo.com/video/741916978?h=51bdfd9b56&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479' />
-              </Item>
-              <Item  style={{display: "flex", flexDirection: "row"}}>
-                <ReactPlayer width="100%" height="720px" onReady={onReady} controls={false} volume={audioTwoState} playing={playPauseState} url='https://player.vimeo.com/video/741917463?h=9f442bbbbc&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479' />
-              </Item>
-          </Box>
+          <Item style={{display: "flex", flexDirection: "row"}}>
+            <ReactPlayer width="100%" height="720px" onReady={onReady} controls={false} volume={audioOneState} playing={playPauseState} url='https://player.vimeo.com/video/741916978?h=51bdfd9b56&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479' />
+            <ReactPlayer width="100%" height="720px" onReady={onReady} controls={false} volume={audioTwoState} playing={playPauseState} url='https://player.vimeo.com/video/741917463?h=9f442bbbbc&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479' />
+          </Item>
         </div>
-        <GraphicEqIcon fontSize="large" color="disabled" style={{transform: !audioSwitchState ? 'rotate(90deg)' : 'rotate(0deg)'}} onClick={switchAudio}></GraphicEqIcon>
+        <div>
+          <GraphicEqIcon fontSize="large" color="disabled" style={{transform: !audioSwitchState ? 'rotate(90deg)' : 'rotate(0deg)'}} onClick={switchAudio}></GraphicEqIcon>
+        </div>
         <PausePlay toggleVideoPlayState={toggleVideoPlayState}/>
+      </Box>
     </div>
   );
 }
