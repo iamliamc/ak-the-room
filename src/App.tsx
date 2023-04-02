@@ -22,7 +22,7 @@ function App() {
       <CssBaseline/>
       <AppBar></AppBar>
       <div className="App">
-        <MultiVideoBlock audioSwitchState={false}></MultiVideoBlock>
+        <MultiVideoBlock></MultiVideoBlock>
       </div>
       <Footer></Footer>
     </ThemeProvider>

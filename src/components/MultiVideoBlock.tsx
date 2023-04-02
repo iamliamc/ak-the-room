@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import type { FC } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogContentText } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -50,7 +50,7 @@ const PausePlay: FC<PausePlayProps> = ({toggleVideoPlayState}) => {
   } 
 
   return (
-    playPauseState ? <div onClick={internalToggleVideoPlayState}><PauseCircleOutline fontSize="large" color="disabled"/></div> : <div onClick={internalToggleVideoPlayState}><PlayCircleOutline fontSize="large" color="disabled"/></div>
+    playPauseState ? <PauseCircleOutline onClick={internalToggleVideoPlayState} fontSize="large" color="disabled"/> : <PlayCircleOutline onClick={internalToggleVideoPlayState} fontSize="large" color="disabled"/>
   )
 }
 
@@ -95,9 +95,7 @@ const OpeningDialogue: FC<OpeningDialogueProps> = ({startVideos, readyCount}) =>
         </DialogTitle>
         <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              <div>
-                <strong>Press spacebar <SpaceBarIcon style={{ position: 'relative', top: '8px'}} color="disabled" /> or click the <GraphicEqIcon style={{transform: 'rotate(90deg)', position: 'relative', top: '3px'}} fontSize="small" color="disabled"/> icon to switch the active audio channel. </strong>             
-              </div>
+              <strong>Press spacebar <SpaceBarIcon style={{ position: 'relative', top: '8px'}} color="disabled" /> or click the <GraphicEqIcon style={{transform: 'rotate(90deg)', position: 'relative', top: '3px'}} fontSize="small" color="disabled"/> icon to switch the active audio channel. </strong>             
               <br/>
               Press start to begin the experience.
             </DialogContentText>
@@ -114,53 +112,20 @@ function Item(props: BoxProps) {
   const { sx, ...other } = props;
   return (
     <Box
-      sx={{
-        bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#101010' : '#fff'),
-        color: (theme) => (theme.palette.mode === 'dark' ? 'grey.300' : 'grey.800'),
-        borderColor: (theme) =>
-          theme.palette.mode === 'dark' ? 'grey.800' : 'grey.300',
-        p: 1,
-        m: 1,
-        fontSize: '0.875rem',
-        fontWeight: '700',
-        ...sx,
-      }}
       {...other}
     />
   );
 }
 
+
 export default function MultiVideoBlock() {
-  // const [audioSwitchState, setAudioSwitchState] = useState<boolean>(false);
+  const [audioSwitchState, setAudioSwitchState] = useState<boolean>(false);
   const [playPauseState, setPlayPauseState] = useState<boolean>(false);
   const [readyCount, setReadyCount] = useState(0);
   const [audioOneState, setAudioOneState] = useState(0.85);
   const [audioTwoState, setAudioTwoState] = useState(0);
 
-  const checkKeyInput = (e: any): void => {
-    console.log("liam", e.keyCode)
-    if(e.keyCode === 32) {
-      switchAudio()
-    }
-  }
-
-  useEffect(() => {
-    // Code to execute when component is mounted
-    document.addEventListener("keydown", checkKeyInput, false);
-    
-    return () => {
-      // Code to execute when component is unmounted
-      document.removeEventListener("keydown", checkKeyInput, false);
-    };
-  }, []);
-
-
-  const startVideos = (): void => {
-    setPlayPauseState(true)
-  }
-
-  const switchAudio = (): void => {
-    console.log('switch audio', audioSwitchState)
+  const switchAudio = useCallback((): void => {
     if (audioSwitchState) {
       setAudioOneState(0.85)
       setAudioTwoState(0)
@@ -169,6 +134,28 @@ export default function MultiVideoBlock() {
       setAudioTwoState(0.85)
     }
     setAudioSwitchState(!audioSwitchState)
+  }, [audioSwitchState])
+
+
+  useEffect(() => {
+    const checkKeyInput = (e: any): void => {
+      if(e.keyCode === 32) {
+        switchAudio()
+      }
+    }
+
+    // Code to execute when component is mounted
+    document.addEventListener("keydown", checkKeyInput, false);
+    
+    return () => {
+      // Code to execute when component is unmounted
+      document.removeEventListener("keydown", checkKeyInput, false);
+    };
+  }, [audioSwitchState, switchAudio]);
+
+
+  const startVideos = (): void => {
+    setPlayPauseState(true)
   }
 
   const toggleVideoPlayState = (): void => {
@@ -180,21 +167,21 @@ export default function MultiVideoBlock() {
   const onReady = () => {
     setReadyCount(readyCount + 1);
   };
-
   return (
     <div style={{width: '100%', height: '100%'}}>
       <OpeningDialogue startVideos={startVideos} readyCount={readyCount}/>
       <Box  sx={{ display: 'grid', gridTemplateColumns: 'repeat(1, 1fr)' }}>
         <div style={{cursor: "pointer", pointerEvents: "none"}}>
           <Item style={{display: "flex", flexDirection: "row"}}>
-            <ReactPlayer width="100%" height="720px" onReady={onReady} controls={false} volume={audioOneState} playing={playPauseState} url='https://player.vimeo.com/video/741916978?h=51bdfd9b56&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479' />
-            <ReactPlayer width="100%" height="720px" onReady={onReady} controls={false} volume={audioTwoState} playing={playPauseState} url='https://player.vimeo.com/video/741917463?h=9f442bbbbc&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479' />
-          </Item>
+            <ReactPlayer width="100%" height="720px" onReady={onReady} controls={false} volume={audioOneState} playing={playPauseState} url='https://player.vimeo.com/video/813905415?h=8033f78434' />
+            <ReactPlayer width="100%" height="720px" onReady={onReady} controls={false} volume={audioTwoState} playing={playPauseState} url='https://player.vimeo.com/video/813905294?h=88e47afe0a' />
+          </Item> 
         </div>
         <div>
           <GraphicEqIcon fontSize="large" color="disabled" style={{transform: !audioSwitchState ? 'rotate(90deg)' : 'rotate(0deg)'}} onClick={switchAudio}></GraphicEqIcon>
+          <br/>
+          <PausePlay toggleVideoPlayState={toggleVideoPlayState}/>
         </div>
-        <PausePlay toggleVideoPlayState={toggleVideoPlayState}/>
       </Box>
     </div>
   );
