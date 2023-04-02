@@ -20,7 +20,6 @@ function App() {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline/>
-      <AppBar></AppBar>
       <div className="App">
         <MultiVideoBlock></MultiVideoBlock>
       </div>
