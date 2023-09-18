@@ -173,8 +173,8 @@ export default function MultiVideoBlock() {
       <Box  sx={{ display: 'grid', gridTemplateColumns: 'repeat(1, 1fr)' }}>
         <div style={{cursor: "pointer", pointerEvents: "none"}}>
           <Item style={{display: "flex", flexDirection: "row"}}>
-            <ReactPlayer width="100%" height="720px" onReady={onReady} controls={false} volume={audioOneState} playing={playPauseState} url='https://player.vimeo.com/video/813905415?h=8033f78434' />
-            <ReactPlayer width="100%" height="720px" onReady={onReady} controls={false} volume={audioTwoState} playing={playPauseState} url='https://player.vimeo.com/video/813905294?h=88e47afe0a' />
+            <ReactPlayer width="100%" height="720px" onReady={onReady} controls={false} volume={audioOneState} playing={playPauseState} url='https://player.vimeo.com/video/863599740?h=caa8c95c67' />
+            <ReactPlayer width="100%" height="720px" onReady={onReady} controls={false} volume={audioTwoState} playing={playPauseState} url='https://player.vimeo.com/video/863599937?h=6f1f04bbcd' />
           </Item> 
         </div>
         <div>
